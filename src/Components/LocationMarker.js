@@ -3,8 +3,10 @@ import React, { useState, useEffect } from "react";
 export default function LocationMarker() {
     const [position, setPosition] = useState(null)
     const map = useMapEvents({
-      click() {
-        map.locate()
+      click(e) {
+        //map.locate()
+        setPosition(e.latlng)
+        map.flyTo(e.latlng, map.getZoom())
       },
       locationfound(e) {
         setPosition(e.latlng)
