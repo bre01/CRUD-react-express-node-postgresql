@@ -1,3 +1,5 @@
+const { response } = require('express')
+
 require('dotenv').config()
 
 const Pool = require('pg').Pool
@@ -9,10 +11,37 @@ const pool = new Pool({
   port: `${process.env.DB_PORT}`,
 })
 
+const getPoints=(request,response)=>{
+  const qs=`SELECT json_agg(row_to_json(locations))
+FROM (
+    SELECT id, name, ST_AsText(geom) as geom 
+    FROM locations
+) locations;`;
+  const nqs=`SELECT
+  ST_AsGeoJSON(t.*)
+FROM
+  locations AS t`
+  pool.query(nqs, (error,results)=>{
+    if(error){
+      throw error
+    }
+    console.log(results.rows);
+    let res="[";
+    results.rows.map((r,index)=>{res+=r.st_asgeojson;if(index<results.rows.length-1) res+=",";});
+    res+="]"
+    response.status(200).send(res);
+    console.log(results);
+  })
+
+
+}
+
+
+
+
 // Our first endpoint will be a GET request. 
 // Inside the pool.query() we can put the raw SQL that will touch the api database. 
 // We’ll SELECT all users and order by id.
-
 const getUsers = (request, response) => {
     pool.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
       if (error) {
@@ -98,4 +127,5 @@ const getUsers = (request, response) => {
     createUser,
     updateUser,
     deleteUser,
+    getPoints,
   }
