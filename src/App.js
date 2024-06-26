@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import NewUserForm from "./Components/NewUserForm";
 import EditUserForm from "./Components/EditUserForm";
 import { MapContainer, TileLayer, useMap ,Marker,Popup,useMapEvents} from "react-leaflet";
-import 'leaflet/dist/leaflet.css';
 import LocationMarker from "./Components/LocationMarker";
+import 'leaflet/dist/leaflet.css';
 
 const App = () => {
   const initialFormState = {
@@ -18,15 +18,7 @@ const App = () => {
   
 
   const [points,setPoints]=useState([]);
-  const map = useMapEvents({
-    click() {
-      map.locate()
-    },
-    locationfound(e) {
-      //setPosition(e.latlng)
-      map.flyTo(e.latlng, map.getZoom())
-    },
-  })
+
 
 
 
@@ -195,7 +187,7 @@ const App = () => {
           </Marker>})
         }
 
-        <LocationMarker/>
+        <LocationMarker></LocationMarker>
       </MapContainer>
     </div>
   );
