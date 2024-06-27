@@ -12,11 +12,7 @@ const pool = new Pool({
 });
 
 const getPoints = (request, response) => {
-  const qs = `SELECT json_agg(row_to_json(locations))
-FROM (
-    SELECT id, name, ST_AsText(geom) as geom 
-    FROM locations
-) locations;`;
+
   const nqs = `SELECT
   ST_AsGeoJSON(t.*)
 FROM
@@ -84,11 +80,14 @@ const createUser = (request, response) => {
     }
   );
 };
-const uploadPoint = (request, response) => {
+const createPoint = (request, response) => {
   const { name, position } = request.body;
-
-  pool.query(` INSERT INTO locations (name, geom) VALUES 
-('${name}', ST_GeomFromText('POINT(${position[1]} ${position[0]})', 4326)),`),
+  
+  
+  const str= `INSERT INTO locations (name, geom) VALUES 
+('${name}', ST_GeomFromText('POINT(${position.lng} ${position.lat})', 4326));`
+  console.log(str);
+  pool.query(str),
     (error, result) => {
       if (error) {
         throw error;
@@ -141,4 +140,5 @@ module.exports = {
   updateUser,
   deleteUser,
   getPoints,
+  createPoint,
 };

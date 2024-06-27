@@ -23,6 +23,7 @@ app.get("/points",db.getPoints);
 app.get('/users', db.getUsers)
 app.get('/users/:id', db.getUserById)
 app.post('/users', db.createUser)
+app.post("/points",db.createPoint)
 app.put('/users/:id', db.updateUser)
 app.delete('/users/:id', db.deleteUser)
 
