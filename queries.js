@@ -21,7 +21,6 @@ FROM
     if (error) {
       throw error;
     }
-    console.log(results.rows);
     let res = "[";
     results.rows.map((r, index) => {
       res += r.st_asgeojson;
@@ -29,7 +28,6 @@ FROM
     });
     res += "]";
     response.status(200).send(res);
-    console.log(results);
   });
 };
 
@@ -129,7 +127,6 @@ const deleteUser = (request, response) => {
       throw error;
     }
     response.status(200).send(`User deleted with ID: ${id}`);
-    console.log(response);
   });
 };
 
